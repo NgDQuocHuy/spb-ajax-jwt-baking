@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="/assets/izitoast/v1.4.0/iziToast-1.4.0.min.css">
+    <link rel="stylesheet" href="/assets/bootstrap/v5.2.2/css/bootstrap.css">
+    <link rel="stylesheet" href="/assets/font-awesome/v5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+</head>
+
+<div class="">
+    <section class="vh-100">
+        <div class="container-fluid h-custom">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="https://timo.vn/wp-content/uploads/Chuyen-tien-ngan-hang-3.jpg"
+                         class="img-fluid" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                    <div class="divider d-flex align-items-center my-4">
+                        <h3 class="text-center fw-bold mx-3 mb-0">Sign In</h3>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <label class="form-label" for="emailLogin">Email</label>
+                        <input type="text" id="emailLogin" name="emailLogin" class="form-control form-control-lg"
+                               placeholder="Enter a email"/>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <label class="form-label" for="passwordLogin">Password</label>
+                        <input type="password" id="passwordLogin" name="passwordLogin"
+                               class="form-control form-control-lg"
+                               placeholder="Enter a password"/>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button id="btnLogin" class="btn btn-primary btn-lg"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">Login
+                        </button>
+                        <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a th:href="@{/register}"
+                                                                                          class="link-danger">Register</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        Ï
+    </section>
+</div>
+
+<script type="text/javascript" src="/assets/jquery/jquery-v3.6.0.min.js"></script>
+<script type="text/javascript" src="/assets/izitoast/v1.4.0/iziToast-1.4.0.js"></script>
+<script src="/assets/js/app.js"></script>
+
+<script>
+
+    let page = {
+        urls: {
+            login: App.BASE_URL_AUTH + '/login'
+        },
+        elements: {},
+        commands: {},
+        initializeEventControl: {}
+    }
+
+    page.elements.emailLogin = $("#emailLogin");
+    page.elements.passwordLogin = $("#passwordLogin");
+    page.elements.btnLogin = $("#btnLogin");
+
+    page.commands.login = () => {
+        let user = {
+            "username": page.elements.emailLogin.val(),
+            "password": page.elements.passwordLogin.val()
+        }
+
+        $.ajax({
+            headers: {
+                "accept": "application/json",
+                "content-type": "application/json"
+            },
+            type: "POST",
+            url: page.urls.login,
+            data: JSON.stringify(user)
+        }).done(() => {
+            console.log("hhhhhhhhhhhhhhhhh")
+            App.IziToast.showSuccessAlert("Login successful");
+
+            setTimeout(() => {
+                window.location.href = "/customers";
+            }, 1500)
+        }).fail(() => {
+            App.IziToast.showErrorAlert("Login fail");
+        })
+    }
+
+    page.initializeEventControl = () => {
+        page.elements.btnLogin.on("click", () => {
+            page.commands.login();
+        })
+    }
+
+    $(() => {
+        page.initializeEventControl();
+    })
+
+</script>
+
+
+</body>
+
+</html>
